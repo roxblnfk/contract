@@ -1,0 +1,24 @@
+{
+    "name": "roxblnfk/contract",
+    "type": "library",
+    "description": "Interfaces and api",
+    "keywords": [],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^7.4|^8.0",
+        "psr/container": "^1.0|^2.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "roxblnfk\\Contract\\": "src"
+        }
+    }
+}
