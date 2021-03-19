@@ -18,7 +18,7 @@ class Route
     {}
 
     /**
-     * Declare a route with all methods or group
+     * Begin declaration a group or a route with all HTTP methods
      */
     public static function create(string $path): AbstractRoute
     {}
