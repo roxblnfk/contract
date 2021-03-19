@@ -73,3 +73,9 @@ return [
             ]),
         ),
 ];
+
+// How to read route parameters
+// this is Route instance
+$route = R::create('pattern')->name('fox')->do(fn () => false);
+// Get name:
+$route->getParameters()->getName();
