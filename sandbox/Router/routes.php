@@ -6,7 +6,7 @@ use Psr\Http\Server\MiddlewareInterface as Middleware1;
 use Psr\Http\Server\MiddlewareInterface as Middleware2;
 use Psr\Http\Server\MiddlewareInterface as BlogController;
 use Psr\Http\Server\MiddlewareInterface as AdminMiddleware;
-use roxblnfk\Contract\Router\Route as R;
+use roxblnfk\Contract\Router\Factory\Route as R;
 use Yiisoft\Http\Method;
 
 return [

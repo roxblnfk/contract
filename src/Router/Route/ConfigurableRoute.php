@@ -12,5 +12,7 @@ interface ConfigurableRoute extends Route
 
     public function pipe(MiddlewareInterface|callable|array|string $middleware, array|string $methods = null): self;
 
+    public function ignorePipe(string $middleware, array|string $methods = null): self;
+
     public function do(callable|array|string $action, array $arguments = []): Route;
 }

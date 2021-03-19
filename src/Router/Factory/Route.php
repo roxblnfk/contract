@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router;
+namespace roxblnfk\Contract\Router\Factory;
 
 use roxblnfk\Contract\Router\Route\AbstractRoute;
 use roxblnfk\Contract\Router\Route\ConfigurableRoute;
 use roxblnfk\Contract\Router\Route\RouteGroup;
 use Yiisoft\Http\Method;
 
-/**
- * Factory
- */
 class Route
 {
     private function __construct()
