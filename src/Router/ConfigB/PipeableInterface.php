@@ -8,7 +8,7 @@ use Psr\Http\Server\MiddlewareInterface;
 
 interface PipeableInterface
 {
-    public function addMiddleware(MiddlewareInterface|callable|array|string $middleware): static;
+    public function addMiddleware(MiddlewareInterface|callable|array|string $middleware, array|string $methods = []): static;
 
     public function disableMiddleware(string $middleware): static;
 }
