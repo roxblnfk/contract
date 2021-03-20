@@ -9,4 +9,5 @@ interface RouteParams
     public function getName(): ?string;
     public function getMethods(): array;
     public function getPattern(): string;
+    public function isOverride(): bool;
 }

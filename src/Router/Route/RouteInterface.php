@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Router\Route;
 
-interface Route
+interface RouteInterface
 {
     public function getParameters(): RouteParams;
 }

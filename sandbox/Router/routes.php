@@ -5,54 +5,56 @@ use Psr\Http\Server\MiddlewareInterface as Middleware;
 use Psr\Http\Server\MiddlewareInterface as Middleware1;
 use Psr\Http\Server\MiddlewareInterface as Middleware2;
 use Psr\Http\Server\MiddlewareInterface as BlogController;
+use Psr\Http\Server\MiddlewareInterface as ArchiveController;
 use Psr\Http\Server\MiddlewareInterface as AdminMiddleware;
-use roxblnfk\Contract\Router\Factory\Route as R;
+use roxblnfk\Contract\Router\ConfigA\RouteFactory as RA;
+use roxblnfk\Contract\Router\ConfigB\RouteFactory as RB;
+use roxblnfk\Contract\Router\ConfigB\GroupFactory as GB;
 use Yiisoft\Http\Method;
 
-return [
-    R::get('/', 'home')
+$configA = [
+    RA::get('/', 'home')
         ->pipe(Middleware::class)
         ->do(fn (ServerRequestInterface $request) => yield from $request->getQueryParams()),
 
     // Blog
 
     // Short group syntax
-    R::group('/blog', [
-        R::get('/index', 'blog::index')
+    RA::group('/blog', [
+        RA::get('/index', 'blog::index')
             ->pipe(Middleware::class)
             ->do(fn (ServerRequestInterface $request) => yield from $request->getQueryParams()),
-        R::web('/post/{id}', 'index') // GET & POST
+        RA::web('/post/{id}', 'index') // GET & POST
             ->pipe(Middleware1::class)
             ->pipe(Middleware2::class, Method::POST) // POST only
             ->pipe(BlogController::class),
-
-        R::web('/archive/[{month}[/{year}]]', 'archive') // GET & POST
+        RA::web('/archive/[{month}[/{year}]]', 'archive') // GET & POST
             ->pipe(Middleware::class)
-            ->pipe(BlogController::class),
+            ->pipe(ArchiveController::class),
     ]),
 
     // REST API
 
     // Alternative syntax with typed parameters and middlewares in group
-    R::create('/api')
+    RA::create('/api')
         ->pipe(Middleware1::class, [Method::PUT, Method::POST, Method::DELETE])
         ->pipe(Middleware2::class)
         ->group(
-            R::get('schema')->do(['API\Crud', 'generate'], ['version' => 3]),
+            RA::get('schema')->do(['API\Crud', 'generate'], ['version' => 3]),
 
             // Admin panel
-            R::create('/admin')
+            RA::create('/admin')
                 ->pipe(AdminMiddleware::class)
                 ->group(
                     // Blog module
-                    R::create('blog')
+                    RA::create('blog')
                         ->pipe(Middleware::class, Method::GET)
                         ->group(
-                            R::get('post/list', 'rest::blog::posts'),
-                            R::rest('post/{id}', 'rest::blog::post')
+                            RA::get('post/list', 'rest::blog::posts'),
+                            RA::rest('post/{id}', 'rest::blog::post')
                                 ->do('RestApi\Admin\Blog\Post'), // callable with __invoke method
-                            R::rest('post/best', 'rest::blog::bestPosts')->do('RestApi\Admin\Blog\bestPosts'),
-                            R::create('post/{post}/comment/{id}')
+                            RA::rest('post/best', 'rest::blog::bestPosts')->do('RestApi\Admin\Blog\bestPosts'),
+                            RA::create('post/{post}/comment/{id}')
                                 ->name('rest::blog::comment'),
                                 // you can't use the `group()` method after `name()` calling
                                 // also actions and middlewares are optional
@@ -61,12 +63,12 @@ return [
                             // ...
                         ),
                     // Admin notifications
-                    R::methods([Method::GET, Method::DELETE], 'notifications')
+                    RA::methods([Method::GET, Method::DELETE], 'notifications')
                         ->do(['RestApi\Admin\Common', 'notifications'], ['format' => 'xml']),
                 ),
 
             // ...
-            R::group('/something', [
+            RA::group('/something', [
                 // ...
                 // ...
                 // ...
@@ -74,8 +76,29 @@ return [
         ),
 ];
 
+$configB = [
+
+    RB::get('/', fn (ServerRequestInterface $request) => yield from $request->getQueryParams())
+        ->addMiddleware(Middleware::class),
+
+    // Blog
+
+    GB::create('/blog', [
+        RB::get('/index', fn (ServerRequestInterface $request) => yield from $request->getQueryParams())
+            ->name('blog::index')
+            ->addMiddleware(Middleware::class),
+        RB::web('/post/{id}', BlogController::class) // GET & POST
+            ->name('index')
+            ->addMiddleware(Middleware1::class)
+            ->addMiddleware(Middleware2::class),
+        RB::web('/archive/[{month}[/{year}]]', ArchiveController::class) // GET & POST
+            ->name('archive')
+            ->addMiddleware(Middleware::class),
+    ]),
+];
+
 // How to read route parameters
-// this is Route instance
-$route = R::create('pattern')->name('fox')->do(fn () => false);
+// this is RouteInterface instance
+$route = RA::create('pattern')->name('fox')->do(fn () => false);
 // Get name:
 $route->getParameters()->getName();

@@ -7,7 +7,7 @@ namespace roxblnfk\Contract\Router\Route;
 interface RouteGroupParams extends RouteParams
 {
     /**
-     * @return Route[]
+     * @return RouteInterface[]
      */
     public function getRoutes(): array;
 }
