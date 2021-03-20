@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Router\ConfigA;
 
+use Psr\Http\Server\MiddlewareInterface;
 use roxblnfk\Contract\Router\Route\RouteGroup;
 use Yiisoft\Http\Method;
 
@@ -62,5 +63,18 @@ class RouteFactory
     public static function group(string $pattern, array $routes): RouteGroup
     {
         return self::create($pattern)->group(... $routes);
+    }
+
+    /**
+     * @param array<int, MiddlewareInterface|callable|array|string> $middlewares
+     * @param RouteFactory[] $routes
+     */
+    public static function groupEx(string $pattern, array $middlewares, array $routes): RouteGroup
+    {
+        $route = self::create($pattern);
+        foreach ($middlewares as $middleware) {
+            $route->pipe($middleware);
+        }
+        return $route->group(... $routes);
     }
 }
