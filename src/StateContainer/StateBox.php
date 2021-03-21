@@ -15,17 +15,17 @@ class StateBox implements StateBoxInterface
         return $result;
     }
 
-    public function &link(int|string $key): mixed
+    final public function &link(int|string $key): mixed
     {
         return $this->data[$key];
     }
 
-    public function get(int|string $key): mixed
+    final public function get(int|string $key): mixed
     {
         return $this->data[$key] ?? null;
     }
 
-    public function set(int|string $key, mixed $value): void
+    final public function set(int|string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }

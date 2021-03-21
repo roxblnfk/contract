@@ -22,6 +22,9 @@ final class StateContainerInterface implements StateBoxInterface
 
     public function addStateBox(StateBoxInterface $box): void
     {
+        if ($box === $this) {
+            return;
+        }
         $this->boxRefs[] = WeakReference::create($box);
     }
 
