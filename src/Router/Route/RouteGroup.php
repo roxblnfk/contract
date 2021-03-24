@@ -6,5 +6,5 @@ namespace roxblnfk\Contract\Router\Route;
 
 interface RouteGroup extends RouteInterface
 {
-    public function getParameters(): RouteGroupParams;
+    public function getParameters(): RouteGroupParameters;
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Router\Route;
 
-interface RouteGroupParams extends RouteParams
+interface RouteGroupParameters extends RouteParameters
 {
     /**
      * @return RouteInterface[]
      */
-    public function getRoutes(): array;
+    public function getRoutes(): iterable;
 }
