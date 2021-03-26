@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Router\Matching;
 
-use roxblnfk\Contract\Pipeline\PipelineDefinitionInterface;
+use roxblnfk\Contract\Pipeline\Definition\PipelineInterface;
+use Stringable;
 
 interface MatchingResult
 {
@@ -22,11 +23,16 @@ interface MatchingResult
 
     public function getMethod(): string;
 
-    // todo
-    public function generateUrl(iterable $params = []): string;
+    /**
+     * Generate new URL based on matched Route and Route params
+     *
+     * @param iterable $params Params to merge with current params
+     * @param iterable $query GET parameters
+     */
+    public function generateUrl(iterable $params = [], iterable $query = []): string|Stringable;
 
     /**
      * Full route pipeline for matched Uri
      */
-    public function getPipeline(): PipelineDefinitionInterface;
+    public function getPipeline(): PipelineInterface;
 }
