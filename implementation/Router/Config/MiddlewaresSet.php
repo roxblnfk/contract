@@ -12,6 +12,7 @@ use SplDoublyLinkedList;
 final class MiddlewaresSet implements \IteratorAggregate
 {
     private SplDoublyLinkedList $definitions;
+    private ?ActionDefinition $action = null;
 
     public function __construct()
     {
@@ -31,5 +32,20 @@ final class MiddlewaresSet implements \IteratorAggregate
     public function getIterator(): SplDoublyLinkedList
     {
         return $this->definitions;
+    }
+
+    public function hasAction(): bool
+    {
+        return $this->action !== null;
+    }
+
+    public function getAction(): ?ActionDefinition
+    {
+        return $this->action;
+    }
+
+    public function setAction(?ActionDefinition $action): void
+    {
+        $this->action = $action;
     }
 }

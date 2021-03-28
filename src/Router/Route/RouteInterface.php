@@ -6,5 +6,5 @@ namespace roxblnfk\Contract\Router\Route;
 
 interface RouteInterface
 {
-    public function getParameters(): RouteParameters;
+    public function getParameters(): ParametersInterface;
 }

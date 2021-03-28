@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Router\Route;
 
-use Psr\Http\Server\MiddlewareInterface;
-
-interface RouteParameters
+interface ParametersInterface
 {
     public function getName(): ?string;
+    public function isNameOverride(): bool;
     public function getMethods(): iterable;
     public function getPattern(): string;
-    public function isOverride(): bool;
-    /**
-     * todo
-     * @return MiddlewareInterface[]
-     */
+    public function isGroup(): bool;
+
     public function getMiddlewares(): iterable;
 }

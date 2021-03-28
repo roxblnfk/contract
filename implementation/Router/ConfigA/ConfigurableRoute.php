@@ -4,18 +4,49 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Implementation\Router\ConfigA;
 
-use Psr\Http\Server\MiddlewareInterface;
+use roxblnfk\Contract\Implementation\Router\Config\ActionDefinition;
+use roxblnfk\Contract\Implementation\Router\Config\MiddlewareDefinition;
+use roxblnfk\Contract\Implementation\Router\Route\Route;
 use roxblnfk\Contract\Router\Route\RouteInterface;
 
-interface ConfigurableRoute extends RouteInterface
+class ConfigurableRoute extends Route
 {
-    public function name(?string $name): self;
+    final public function methods(?iterable $methods): self
+    {
+        $this->methods = $methods;
+        return $this;
+    }
 
-    public function override(): self;
+    final public function name(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-    public function pipe(MiddlewareInterface|callable|array|string $middleware, array|string $methods = null): self;
+    final public function override(bool $value = true): self
+    {
+        $this->isOverride = $value;
+        return $this;
+    }
 
-    public function ignorePipe(string $middleware, array|string $methods = null): self;
+    final public function pipe(
+        mixed $middleware,
+        array|string $methods = null
+    ): self {
+        $middleware = new MiddlewareDefinition($middleware, $methods, false);
+        $this->middlewares->prepend($middleware);
+        return $this;
+    }
 
-    public function do(callable|array|string $action, array $arguments = []): RouteInterface;
+    final public function ignorePipe(string $middleware, array|string $methods = null): self
+    {
+        $this->middlewares->prepend(new MiddlewareDefinition($middleware, $methods, true));
+        return $this;
+    }
+
+    public function do(mixed $action, array $arguments = []): RouteInterface
+    {
+        $this->middlewares->setAction(new ActionDefinition($action, $arguments));
+        return $this;
+    }
 }
