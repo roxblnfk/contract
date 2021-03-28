@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router\ConfigA;
+namespace roxblnfk\Contract\Implementation\Router\ConfigA;
 
 use Psr\Http\Server\MiddlewareInterface;
 use roxblnfk\Contract\Router\Route\RouteGroup;

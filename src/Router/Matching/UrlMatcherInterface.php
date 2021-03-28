@@ -10,5 +10,5 @@ use Yiisoft\Http\Method;
 interface UrlMatcherInterface
 {
     public function matchUrl(string $url, string $method = Method::GET): MatchingResult;
-    public function matchUri(UriInterface $uri): MatchingResult;
+    public function matchUri(UriInterface $uri): ?MatchingResult;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router\ConfigB;
+namespace roxblnfk\Contract\Implementation\Router\ConfigB;
 
 use Yiisoft\Http\Method;
 
@@ -10,7 +10,6 @@ class RouteFactory
 {
     private function __construct()
     {}
-
 
     public static function methods(array|string $methods, string $pattern, callable|array|string $action): ConfigurableRoute
     {}

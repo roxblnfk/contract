@@ -8,7 +8,7 @@ use Psr\Http\Server\MiddlewareInterface as Middleware3;
 use Psr\Http\Server\MiddlewareInterface as BlogController;
 use Psr\Http\Server\MiddlewareInterface as ArchiveController;
 use Psr\Http\Server\MiddlewareInterface as AdminMiddleware;
-use roxblnfk\Contract\Router\ConfigA\RouteFactory as Route;
+use roxblnfk\Contract\Implementation\Router\ConfigA\RouteFactory as Route;
 use Yiisoft\Http\Method;
 
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router\ConfigB;
+namespace roxblnfk\Contract\Implementation\Router\ConfigB;
 
 class GroupFactory
 {

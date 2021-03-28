@@ -8,8 +8,8 @@ use Psr\Http\Server\MiddlewareInterface as Middleware3;
 use Psr\Http\Server\MiddlewareInterface as BlogController;
 use Psr\Http\Server\MiddlewareInterface as ArchiveController;
 use Psr\Http\Server\MiddlewareInterface as AdminMiddleware;
-use roxblnfk\Contract\Router\ConfigB\RouteFactory as Route;
-use roxblnfk\Contract\Router\ConfigB\GroupFactory as Group;
+use roxblnfk\Contract\Implementation\Router\ConfigB\RouteFactory as Route;
+use roxblnfk\Contract\Implementation\Router\ConfigB\GroupFactory as Group;
 use Yiisoft\Http\Method;
 
 return [

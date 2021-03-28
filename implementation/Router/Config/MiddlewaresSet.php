@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router\Config;
+namespace roxblnfk\Contract\Implementation\Router\Config;
 
 use SplDoublyLinkedList;
 

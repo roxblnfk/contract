@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Router\Config;
+namespace roxblnfk\Contract\Implementation\Router\Config;
 
 /**
  * @internal
@@ -17,6 +17,6 @@ final class MiddlewareDefinition
         public ?array $methods = null,
 
         public bool $disabler = false
-    )
-    { }
+    ) {
+    }
 }

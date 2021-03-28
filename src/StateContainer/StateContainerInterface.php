@@ -13,6 +13,7 @@ final class StateContainerInterface implements StateBoxInterface
     /** @var bool State dropping in process */
     private bool $dropping = false;
 
+    // todo: add box name?
     public function createStateBox(array $initValues = []): StateBox
     {
         $box = StateBox::fromArray($initValues);
