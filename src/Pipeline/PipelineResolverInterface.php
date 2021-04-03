@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Pipeline;
 
-use roxblnfk\Contract\Pipeline\Definition\PipelineInterface;
+use roxblnfk\Contract\Pipeline\PipelineInterface;
 
 interface PipelineResolverInterface
 {

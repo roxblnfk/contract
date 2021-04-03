@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace roxblnfk\Contract\Pipeline\Definition;
+namespace roxblnfk\Contract\Pipeline;
 
 use IteratorAggregate;
 
