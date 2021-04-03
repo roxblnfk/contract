@@ -29,6 +29,12 @@ class ConfigurableRoute extends Route
         return $this;
     }
 
+    final public function passive(bool $value = true): self
+    {
+        $this->isPassive = $value;
+        return $this;
+    }
+
     final public function pipe(
         mixed $middleware,
         array|string $methods = null

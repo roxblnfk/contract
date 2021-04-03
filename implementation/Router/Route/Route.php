@@ -12,6 +12,7 @@ abstract class Route implements Router\Route\ParametersInterface, Router\Route\R
 {
     protected iterable $methods = Method::ALL;
     protected bool $isOverride = false;
+    protected ?bool $isPassive = null;
     protected MiddlewaresSet $middlewares;
 
     private bool $isGroup = false;
@@ -56,6 +57,11 @@ abstract class Route implements Router\Route\ParametersInterface, Router\Route\R
     final public function isGroup(): bool
     {
         return $this->isGroup;
+    }
+
+    final public function isPassive(): bool
+    {
+        return $this->isPassive ?? ($this->name !== null && $this->middlewares->isEmpty());
     }
 
     final public function getMiddlewares(): iterable

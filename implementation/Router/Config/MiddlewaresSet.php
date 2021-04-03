@@ -48,4 +48,9 @@ final class MiddlewaresSet implements \IteratorAggregate
     {
         $this->action = $action;
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->action === null && count($this->definitions) === 0;
+    }
 }
