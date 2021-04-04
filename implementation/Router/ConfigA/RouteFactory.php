@@ -10,9 +10,6 @@ use Yiisoft\Http\Method;
 
 class RouteFactory
 {
-    private function __construct()
-    {}
-
     /**
      * Begin declaration a group or a route with all HTTP methods
      */
