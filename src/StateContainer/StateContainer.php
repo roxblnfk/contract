@@ -9,11 +9,8 @@ use WeakReference;
 
 final class StateContainer implements StateBoxInterface
 {
-    /** @var WeakReference[][] */
+    /** @var WeakReference[][]|callable[][] */
     private array $objects = [];
-
-    /** @var callable[] */
-    private array $closures = [];
 
     /** @var bool State dropping in process */
     private bool $dropping = false;
@@ -35,7 +32,7 @@ final class StateContainer implements StateBoxInterface
 
     public function registerClosure(callable $callable): void
     {
-        $this->closures[] = $callable;
+        $this->objects[] = is_array($callable) ? $callable : [$callable];
     }
 
     public function dropState(): void
@@ -65,9 +62,6 @@ final class StateContainer implements StateBoxInterface
                     throw new RuntimeException();
                 }
                 $newBoxes[] = $pair;
-            }
-            foreach ($this->closures as $closure) {
-                $closure();
             }
 
             $this->objects = $newBoxes;
