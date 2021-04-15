@@ -10,9 +10,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Middlewares pipeline definition
  *
- * @method iterable|MiddlewareInterface[] getPipes() List of  MiddlewareInterface
+ * @method iterable|MiddlewareInterface[] getPipes() List of MiddlewareInterface
  */
-interface MiddlewaresInterface extends PipelineInterface
+interface MiddlewaresPipelineInterface extends PipelineInterface
 {
     /**
      * Last handler
