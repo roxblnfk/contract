@@ -22,21 +22,22 @@ final class MiddlewaresPipelineResolver implements PipelineResolverInterface
     {
         $this->injector = $injector;
     }
-    public function resolvePipeline(PipelineInterface ...$pipelines): callable
+    public function resolvePipeline(PipelineInterface|iterable ...$pipelines): callable
     {
         $iterator = $this->iteratePipelines($pipelines);
         return new GlueRequestHandler($iterator, $this->injector);
     }
 
     /**
-     * @param PipelineInterface[] $pipelines
+     * @param array<mixed, PipelineInterface|iterable> $pipelines
      *
      * @throws InvalidMiddlewareDefinitionException
      */
     private function iteratePipelines(array $pipelines): \Generator
     {
         foreach ($pipelines as $pipeLine) {
-            foreach ($pipeLine->getPipes() as $pipeDefinition) {
+            $definitions = $pipeLine instanceof PipelineInterface ? $pipeLine->getPipes() : $pipeLine;
+            foreach ($definitions as $pipeDefinition) {
                 yield $this->resolveMiddlewareDefinition($pipeDefinition);
             }
         }

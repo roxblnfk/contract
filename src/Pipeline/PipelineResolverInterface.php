@@ -6,5 +6,5 @@ namespace roxblnfk\Contract\Pipeline;
 
 interface PipelineResolverInterface
 {
-    public function resolvePipeline(PipelineInterface ...$pipelines): callable;
+    public function resolvePipeline(PipelineInterface|iterable ...$pipelines): callable;
 }
