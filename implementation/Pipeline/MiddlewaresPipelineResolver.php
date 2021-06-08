@@ -17,11 +17,20 @@ use Yiisoft\Injector\Injector;
 final class MiddlewaresPipelineResolver implements PipelineResolverInterface
 {
     private Injector $injector;
+    private ?RequestHandlerInterface $defaultRequestHandler = null;
 
     public function __construct(Injector $injector)
     {
         $this->injector = $injector;
     }
+
+    public function withDefaultRequestHandler(?RequestHandlerInterface $handler): self
+    {
+        $new = clone $this;
+        $new->defaultRequestHandler = $handler;
+        return $new;
+    }
+
     public function resolvePipeline(PipelineInterface|iterable ...$pipelines): callable
     {
         $iterator = $this->iteratePipelines($pipelines);
@@ -52,7 +61,9 @@ final class MiddlewaresPipelineResolver implements PipelineResolverInterface
 
     private function getDefaultRequestHandler(): RequestHandlerInterface
     {
-
+        if ($this->defaultRequestHandler !== null) {
+            return $this->defaultRequestHandler;
+        }
         throw new DefaultRequestHandlerIsNotConfiguredException();
     }
 
