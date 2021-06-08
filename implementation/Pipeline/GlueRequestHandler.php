@@ -9,14 +9,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use roxblnfk\Contract\Implementation\Pipeline\Exception\InvalidMiddlewareDefinitionException;
+use Yiisoft\Injector\Injector;
 
 final class GlueRequestHandler implements RequestHandlerInterface
 {
+    private Injector $injector;
     private \Generator $iterator;
 
-    public function __construct(\Generator $iterator)
+    public function __construct(\Generator $iterator, Injector $injector)
     {
         $this->iterator = $iterator;
+        $this->injector = $injector;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -33,13 +36,17 @@ final class GlueRequestHandler implements RequestHandlerInterface
         }
         $middleware = $this->iterator->current();
         $this->iterator->next();
-        $nextHandler = new self($this->iterator);
+        $nextHandler = new self($this->iterator, $this->injector);
 
         if ($middleware instanceof MiddlewareInterface) {
             return $middleware->process($request, $nextHandler);
         }
         if (is_callable($middleware)) {
-            $result = $middleware($request, $nextHandler);
+            $result = $this->injector->invoke($middleware, [$request, $nextHandler]);
+            // Kostyl' for yiisoft/router
+            if ($result instanceof MiddlewareInterface) {
+                return $result->process($request, $nextHandler);
+            }
         } else {
             throw new InvalidMiddlewareDefinitionException();
         }

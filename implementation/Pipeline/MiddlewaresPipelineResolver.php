@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace roxblnfk\Contract\Implementation\Pipeline;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use roxblnfk\Contract\Implementation\Pipeline\Exception\DefaultRequestHandlerIsNotConfiguredException;
@@ -14,23 +12,26 @@ use roxblnfk\Contract\Implementation\Pipeline\Exception\InvalidMiddlewareDefinit
 use roxblnfk\Contract\Pipeline\MiddlewaresPipelineInterface;
 use roxblnfk\Contract\Pipeline\PipelineInterface;
 use roxblnfk\Contract\Pipeline\PipelineResolverInterface;
+use Yiisoft\Injector\Injector;
 
 final class MiddlewaresPipelineResolver implements PipelineResolverInterface
 {
-    private ContainerInterface $container;
+    private Injector $injector;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(Injector $injector)
     {
-        $this->container = $container;
+        $this->injector = $injector;
     }
     public function resolvePipeline(PipelineInterface ...$pipelines): callable
     {
         $iterator = $this->iteratePipelines($pipelines);
-        return new GlueRequestHandler($iterator);
+        return new GlueRequestHandler($iterator, $this->injector);
     }
 
     /**
      * @param PipelineInterface[] $pipelines
+     *
+     * @throws InvalidMiddlewareDefinitionException
      */
     private function iteratePipelines(array $pipelines): \Generator
     {
@@ -60,10 +61,10 @@ final class MiddlewaresPipelineResolver implements PipelineResolverInterface
             return $definition;
         }
         if (is_string($definition)) {
-            return $this->container->get($definition);
+            return $this->injector->make($definition);
         }
         if (is_array($definition) && array_keys($definition) === [0, 1]) {
-            return [$this->container->get($definition[0]), $definition[1]];
+            return [$this->injector->make($definition[0]), $definition[1]];
         }
         throw new InvalidMiddlewareDefinitionException(
             sprintf('Middleware MUST return instance of %s.', ResponseInterface::class)
