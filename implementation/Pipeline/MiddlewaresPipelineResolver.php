@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace roxblnfk\Contract\Implementation\Pipeline;
 
 use Generator;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -18,12 +19,14 @@ use Yiisoft\Injector\Injector;
 
 final class MiddlewaresPipelineResolver implements PipelineResolverInterface
 {
+    private ContainerInterface $container;
     private Injector $injector;
     private ?RequestHandlerInterface $defaultRequestHandler = null;
 
-    public function __construct(Injector $injector)
+    public function __construct(ContainerInterface $container, Injector $injector)
     {
         $this->injector = $injector;
+        $this->container = $container;
     }
 
     public function withDefaultRequestHandler(?RequestHandlerInterface $handler): self
@@ -136,10 +139,10 @@ final class MiddlewaresPipelineResolver implements PipelineResolverInterface
             return $definition;
         }
         if (is_string($definition)) {
-            return $this->injector->make($definition);
+            return $this->container->get($definition);
         }
-        if (is_array($definition) && array_keys($definition) === [0, 1]) {
-            return [$this->injector->make($definition[0]), $definition[1]];
+        if (is_array($definition) && array_keys($definition) === [0, 1] && is_string($definition[0])) {
+            return [$this->container->get($definition[0]), $definition[1]];
         }
         throw new InvalidMiddlewareDefinitionException(
             sprintf('Middleware MUST return instance of %s.', ResponseInterface::class)
